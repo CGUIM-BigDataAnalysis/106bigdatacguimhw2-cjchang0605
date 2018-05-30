@@ -1,0 +1,134 @@
+install.packages("ggplot2")
+install.packages(c("choroplethr","choroplethrMaps"))
+install.packages("ggmap") 
+install.packages("rworldmap")
+install.packages("plotly")
+install.packages("ggthemes")
+install.packages("rgdal")
+install.packages("readr")
+library(choroplethr)
+library(jsonlite)
+library(RCurl)
+library(dplyr)
+library(ggplot2)
+library(ggmap)
+library(rworldmap)
+library(plotly)
+library(ggthemes)
+library(rdgal)
+library(readr)
+library(httr)
+    
+library(stringi)  
+library(stringr)  
+library(tidyr)    
+library(grid)     
+library(scales)   
+
+
+come103 <- fromJSON(getURL("https://quality.data.gov.tw/dq_download_json.php?nid=6289&md5_url=25f64d5125016dcd6aed42e50c972ed0"))
+
+
+names(come103)[3]<-"x3"
+names(come103)[4]<-"x4"
+names(come103)[5]<-"x5"
+names(come103)[6]<-"x6"
+names(come103)[7]<-"x7"
+names(come103)[8]<-"x8"
+names(come103)[9]<-"x9"
+names(come103)[10]<-"x10"
+names(come103)[11]<-"x11"
+come103$x3  <- as.numeric(come103$x3)
+come103$x4  <- as.numeric(come103$x4)
+come103$x5  <- as.numeric(come103$x5)
+come103$x6  <- as.numeric(come103$x6)
+come103$x7  <- as.numeric(come103$x7)
+come103$x8  <- as.numeric(come103$x8)
+come103$x9  <- as.numeric(come103$x9)
+come103$x10 <- as.numeric(come103$x10)
+come103$x11 <- as.numeric(come103$x11)
+come103   <- mutate(come103,total=x3+x4+x5+x6+x7+x8+x9+x10+x11)
+
+head(come103[order(come103$total,decreasing = T),],10)
+
+
+uni103 <- fromJSON(getURL("https://quality.data.gov.tw/dq_download_json.php?nid=6289&md5_url=a6d1469f39fe41fb81dbfc373aef3331"))
+names(uni103)[4]<-"x4"
+names(uni103)[5]<-"x5"
+names(uni103)[6]<-"x6"
+names(uni103)[7]<-"x7"
+names(uni103)[8]<-"x8"
+names(uni103)[9]<-"x9"
+names(uni103)[10]<-"x10"
+names(uni103)[11]<-"x11"
+names(uni103)[12]<-"x12"
+
+
+uni103$x4  <- as.numeric(uni103$x4)
+uni103$x5  <- as.numeric(uni103$x5)
+uni103$x6  <- as.numeric(uni103$x6)
+uni103$x7  <- as.numeric(uni103$x7)
+uni103$x8  <- as.numeric(uni103$x8)
+uni103$x9  <- as.numeric(uni103$x9)
+#uni103$x10 <- as.numeric(uni103$x10)
+uni103$x11 <- as.numeric(uni103$x11)
+uni103$x12 <- as.numeric(uni103$x12)
+
+uni103 <- mutate(uni103,total=x4+x5+x6+x7+x8+x9+x11+x12)
+head(uni103[order(uni103$total,decreasing = T),],10)
+
+
+ggplot(data=come103,
+       aes(x=國別,y=total))+
+theme_bw(base_size = 8) +
+  theme(axis.text.x=element_text(angle=90,hjust=1)) +
+  geom_bar(stat="identity") 
+
+
+
+
+
+
+
+
+
+
+df <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv')
+
+l <- list(color = toRGB("grey"), width = 0.8)
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+p <- plot_geo(come103) %>%
+  add_trace(
+    z = ~total, color = ~total, colors = 'Blues',
+    text = ~國別, locations = ~國別, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'GDP Billions US$', tickprefix = '$') %>%
+  layout(
+    title = '2014 Global GDP<br>Source:<a href="https://www.cia.gov/library/publications/the-world-factbook/fields/2195.html">CIA World Factbook</a>',
+    geo = g
+  )
+chart_link = api_create(p, filename="choropleth-world")
+chart_link
+
+
+
+plot_ly(come103, z=~total, text=~國別, locations=~國別, type= "choropleth", color=~total, colors="Greens", marker = list(line = a)) %>%
+  layout(title="Numbers of exchange students", geo=g)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1526740480160.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4410A7CB",
+    "lastKnownWriteTime" : 1527466663,
+    "last_content_update" : 1527466666256,
+    "path" : "C:/Users/user/Desktop/HW2.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "95,0",
+        "scrollLine" : "88",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
